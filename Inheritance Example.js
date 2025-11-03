@@ -54,17 +54,37 @@ class Employee extends Person {
 
 
 
-const emp1 = new Employee("Alice", 30, "alice@email.com", 101, "HR", 50000);
+class Manager extends Employee {
+    #bonus; // Private field, encapsulated
+    team;   // Public field
 
-console.log(emp1.getPersonInfo());
-// Alice 30 alice@email.com | Dept: HR | ID: 101 | Salary: 50000
+    constructor(name, age, email, employeeId, department, salary, bonus, team = []) {
+        super(name, age, email, employeeId, department, salary);
+        this.#bonus = bonus;   // Private: only accessible via getter/setter
+        this.team = team;      // Public: list of employees the manager manages
+    }
 
-console.log(emp1.work());
-// Working in HR
+    // Encapsulation: controlled access to private bonus
+    setBonus(amount) {
+        this.#bonus = amount;
+    }
 
-console.log(emp1.getSalary());
-// 50000
+    getBonus() {
+        return this.#bonus;
+    }
 
-emp1.setSalary(55000);
-console.log(emp1.getSalary());
-// 55000
+    // Add an employee to the manager's team
+    addTeamMember(employee) {
+        this.team.push(employee);
+    }
+
+    // Override getPersonInfo to include bonus and team size
+    getPersonInfo() {
+        return `${super.getPersonInfo()} | Bonus: ${this.getBonus()} | Team Size: ${this.team.length}`;
+    }
+
+    manage() {
+        return `Managing a team of ${this.team.length} employees in ${this.department} department.`;
+    }
+}
+
